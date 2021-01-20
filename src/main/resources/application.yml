@@ -1,0 +1,71 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/blogmongodb
+
+  mail:
+    host: smtp.yandex.ru
+    username:
+    password:
+    port: 465
+    protocol: smtps
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      enabled: false
+
+  mvc:
+    pathmatch:
+      matching-strategy: path_pattern_parser
+
+restore_code:
+  code_length: 40
+  expiration_time: 3600
+  path: "http://localhost:8080/login/change-password/"
+captcha:
+  expiration:
+    time: 3600
+  text_size: 15
+  frame_width: 100
+  frame_height: 40
+  width: 40
+  height: 20
+  secret_length: 15
+  code_length: 4
+password:
+  min_length: 6
+
+settings: "{
+  MULTIUSER_MODE: 'Многопользовательский режим',
+  POST_PREMODERATION: 'Премодерация постов',
+  STATISTICS_IS_PUBLIC: 'Показывать всем статистику блога'
+}"
+
+setting:
+  multiuser: MULTIUSER_MODE
+  premoderation: POST_PREMODERATION
+
+
+blog_info:
+  title: "DevPub"
+  subtitle: "Рассказы разработчиков"
+  phone: "+7 903 666-44-55"
+  email: "mail@mail.ru"
+  copyright: "Fitzgerald Mouseton"
+  copyright_form: "2005"
+
+image:
+  avatar_height: 36
+  avatar_width: 36
+  max_size: 5242880
+  max_image_height: 400
+  max_image_width: 400
+
+location:
+  avatars: "avatars/"
+  images: "images/"
+
+tag:
+  min_weight: 0.1
+
