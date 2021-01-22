@@ -1,4 +1,4 @@
-package com.cheeseind.blogenginewebflux.validators;
+package com.cheeseind.blogenginewebflux.util.validators;
 
 import com.cheeseind.blogenginewebflux.services.UserService;
 import lombok.RequiredArgsConstructor;

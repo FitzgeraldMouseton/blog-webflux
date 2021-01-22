@@ -1,4 +1,4 @@
-package com.cheeseind.blogenginewebflux.validators;
+package com.cheeseind.blogenginewebflux.util.validators;
 
 import com.cheeseind.blogenginewebflux.models.dto.blogdto.postdto.AddPostRequest;
 import com.cheeseind.blogenginewebflux.models.constants.PostConstraints;

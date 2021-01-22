@@ -1,6 +1,5 @@
-package com.cheeseind.blogenginewebflux.validators;
+package com.cheeseind.blogenginewebflux.util.validators;
 
-import com.cheeseind.blogenginewebflux.models.CaptchaCode;
 import com.cheeseind.blogenginewebflux.models.dto.authdto.SetPassRequest;
 import com.cheeseind.blogenginewebflux.services.CaptchaService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.Base64;

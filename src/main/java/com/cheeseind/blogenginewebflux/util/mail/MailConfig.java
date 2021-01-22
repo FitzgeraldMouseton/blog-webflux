@@ -1,4 +1,4 @@
-package com.cheeseind.blogenginewebflux.mail;
+package com.cheeseind.blogenginewebflux.util.mail;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

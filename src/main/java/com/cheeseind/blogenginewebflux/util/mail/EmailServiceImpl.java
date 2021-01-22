@@ -1,4 +1,4 @@
-package com.cheeseind.blogenginewebflux.mail;
+package com.cheeseind.blogenginewebflux.util.mail;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

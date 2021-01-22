@@ -1,4 +1,4 @@
-package com.cheeseind.blogenginewebflux.validators;
+package com.cheeseind.blogenginewebflux.util.validators;
 
 import com.cheeseind.blogenginewebflux.models.constants.UserConstraints;
 import com.cheeseind.blogenginewebflux.models.dto.authdto.RegisterRequest;

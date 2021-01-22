@@ -19,11 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@Configuration
 @Order(-2)
+@Configuration
 public class GlobalErrorHandler implements ErrorWebExceptionHandler {
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public GlobalErrorHandler(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -33,48 +33,40 @@ public class GlobalErrorHandler implements ErrorWebExceptionHandler {
     public Mono<Void> handle(ServerWebExchange serverWebExchange, Throwable throwable) {
 
         DataBufferFactory bufferFactory = serverWebExchange.getResponse().bufferFactory();
-        if (throwable instanceof InappropriateActionException) {
+        if (throwable instanceof InappropriateActionException || throwable instanceof PageNotFoundException) {
             serverWebExchange.getResponse().setStatusCode(HttpStatus.OK);
-            DataBuffer dataBuffer;
-            try {
-                dataBuffer = bufferFactory.wrap(objectMapper.writeValueAsBytes(new SimpleResponseDto(false)));
-            } catch (JsonProcessingException e) {
-                dataBuffer = bufferFactory.wrap("".getBytes());
-            }
+            log.info("exception: " + throwable.getMessage());
+            Mono<DataBuffer> responseBody = Mono.fromCallable(() -> {
+                DataBuffer dataBuffer;
+                try {
+                    dataBuffer = bufferFactory.wrap(objectMapper.writeValueAsBytes(new SimpleResponseDto(false)));
+                } catch (JsonProcessingException e) {
+                    dataBuffer = bufferFactory.wrap("".getBytes());
+                }
+                return dataBuffer;
+            });
             serverWebExchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-            return serverWebExchange.getResponse().writeWith(Mono.just(dataBuffer));
-        }
-
-        if (throwable instanceof PageNotFoundException) {
-            serverWebExchange.getResponse().setStatusCode(HttpStatus.OK);
-            DataBuffer dataBuffer;
-            try {
-                dataBuffer = bufferFactory.wrap(objectMapper.writeValueAsBytes(new SimpleResponseDto(false)));
-            } catch (JsonProcessingException e) {
-                dataBuffer = bufferFactory.wrap("".getBytes());
-            }
-            serverWebExchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-            return serverWebExchange.getResponse().writeWith(Mono.just(dataBuffer));
+            return serverWebExchange.getResponse().writeWith(responseBody);
         }
 
         if (throwable instanceof InvalidParameterException) {
+            log.info("exception: " + throwable.getMessage());
             serverWebExchange.getResponse().setStatusCode(HttpStatus.OK);
-            DataBuffer dataBuffer;
-            try {
-                log.info("error");
-                Map<String, String> errors = new HashMap<>();
-                ((InvalidParameterException) throwable).getErrors().getFieldErrors()
-                        .forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
-                errors.forEach((k, v) -> log.info(k + ": " + v));
-                dataBuffer = bufferFactory.wrap(objectMapper.writeValueAsBytes(new ErrorResponse(errors)));
-            } catch (JsonProcessingException e) {
-                dataBuffer = bufferFactory.wrap("".getBytes());
-            }
+            Mono<DataBuffer> responseBody = Mono.fromCallable(() -> {
+                DataBuffer dataBuffer;
+                try {
+                    Map<String, String> errors = new HashMap<>();
+                    ((InvalidParameterException) throwable).getErrors().getFieldErrors()
+                            .forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
+                    dataBuffer = bufferFactory.wrap(objectMapper.writeValueAsBytes(new ErrorResponse(errors)));
+                } catch (JsonProcessingException e) {
+                    dataBuffer = bufferFactory.wrap("".getBytes());
+                }
+                return dataBuffer;
+            });
             serverWebExchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-            return serverWebExchange.getResponse().writeWith(Mono.just(dataBuffer));
+            return serverWebExchange.getResponse().writeWith(responseBody);
         }
-
-
 
         serverWebExchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
         serverWebExchange.getResponse().getHeaders().setContentType(MediaType.TEXT_PLAIN);

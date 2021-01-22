@@ -1,7 +1,7 @@
 package com.cheeseind.blogenginewebflux.handlers;
 
 import com.cheeseind.blogenginewebflux.exceptions.InvalidParameterException;
-import com.cheeseind.blogenginewebflux.mail.EmailServiceImpl;
+import com.cheeseind.blogenginewebflux.util.mail.EmailServiceImpl;
 import com.cheeseind.blogenginewebflux.mappers.UserDtoMapper;
 import com.cheeseind.blogenginewebflux.models.CaptchaCode;
 import com.cheeseind.blogenginewebflux.models.User;
@@ -10,8 +10,8 @@ import com.cheeseind.blogenginewebflux.models.dto.Validatable;
 import com.cheeseind.blogenginewebflux.models.dto.authdto.*;
 import com.cheeseind.blogenginewebflux.services.CaptchaService;
 import com.cheeseind.blogenginewebflux.services.UserService;
-import com.cheeseind.blogenginewebflux.validators.RegisterUserValidator;
-import com.cheeseind.blogenginewebflux.validators.SetNewPasswordValidator;
+import com.cheeseind.blogenginewebflux.util.validators.RegisterUserValidator;
+import com.cheeseind.blogenginewebflux.util.validators.SetNewPasswordValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;

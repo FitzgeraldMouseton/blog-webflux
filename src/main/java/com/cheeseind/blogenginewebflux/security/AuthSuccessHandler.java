@@ -26,7 +26,7 @@ public class AuthSuccessHandler implements ServerAuthenticationSuccessHandler {
 
         Mono<User> principal = Mono.just(authentication.getPrincipal()).cast(User.class);
         exchange.getExchange().getResponse().setStatusCode(HttpStatus.OK);
-        Mono<DataBuffer> map = principal
+        Mono<DataBuffer> responseBody = principal
                 .flatMap(userDtoMapper::userToLoginResponse)
                 .map(loginDto -> new AuthenticationResponse(true, loginDto))
                 .handle((r, sink) -> {
@@ -40,6 +40,6 @@ public class AuthSuccessHandler implements ServerAuthenticationSuccessHandler {
                     }
                     sink.complete();
                 });
-        return exchange.getExchange().getResponse().writeWith(map);
+        return exchange.getExchange().getResponse().writeWith(responseBody);
     }
 }
